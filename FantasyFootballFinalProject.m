@@ -11,9 +11,9 @@ end
 %% Create better players array
 for j=1:length(allPlayers.players.player)
     players(j).id=allPlayers.players.player{j,1}.id;
-    players(j).name=allPlayers.players.player{j,1}.name;
-    players(j).position=allPlayers.players.player{j,1}.position;
-    players(j).team=allPlayers.players.player{j,1}.team;
+    players(j).info.name=allPlayers.players.player{j,1}.name;
+    players(j).info.position=allPlayers.players.player{j,1}.position;
+    players(j).info.team=allPlayers.players.player{j,1}.team;
 end
 %% Create raw roster data
 allRostersMat = zeros(19,12);
@@ -22,5 +22,10 @@ for k=1:length(roster.rosters.franchise)
         allRostersMat(i,k) = str2double(roster.rosters.franchise(k).player(i,1).id);
         rawData(k).franchise = roster.rosters.franchise(k);
         rawData(k).franchise.name = franchise.league.franchises.franchise{k,1}.name;
+        index = find(strcmp({rawData(k).franchise.player(i).id}, {players.id})==1);
+        if (index ~= 0)
+            indexraw(i,k) = index;
+        end
     end
 end
+rawData(1).franchise.player(2).id
