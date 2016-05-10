@@ -22,7 +22,7 @@ for k=1:length(roster.rosters.franchise)
         rawData(k).franchise.name = franchise.league.franchises.franchise{k,1}.name;
     end   
 end
-for k=1:length(roster.rosters.franchise)
+for k=1:length(roster.rosters.franchise) % Adds player data to rawData
     for l=1:length(roster.rosters.franchise(k).player)
         index = find(strcmp({rawData(k).franchise.player(l).id}, {players.id})==1);
         if (index ~= 0)
