@@ -77,7 +77,6 @@ for w=1:regSeason
             scoreCheck = cellfun(@length, {rawData(t).franchise.player.score});
             if (scoreCheck(r) ~= 0)
                 wkscore(r,t,w) = str2double(rawData(t).franchise.player(r).score(w).week);
-                disp('Fuck?')
             end
         end
         
