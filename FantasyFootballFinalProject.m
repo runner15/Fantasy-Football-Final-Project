@@ -39,7 +39,7 @@ for k=1:teams % Adds player data to rawData
         end 
     end   
 end
-for h=1:weekTot
+for h=1:weekTot % Adds weekly player scores to rawData structure
     for t=1:teams
         for r=1:length(rawData(t).franchise.player)
             scores = find(strcmp({rawData(t).franchise.player(r).id},...
