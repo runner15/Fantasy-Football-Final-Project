@@ -60,8 +60,7 @@ for w=1:regSeason
     schedule.week(w).matchup(:) = allTeams(randperm(numel(allTeams)));
 end
 %% Get scores for each week for each franchise
-wkscore = zeros(regSeason,teams,19);
-for w=1:regSeason
+for w=1:weekTot % Create structure with weekly scores 
     for t=1:teams
         for r=1:length(rawData(t).franchise.player)
             totScore = length(rawData(t).franchise.player(r).score);
@@ -76,9 +75,23 @@ for w=1:regSeason
             end
             scoreCheck = cellfun(@length, {rawData(t).franchise.player.score});
             if (scoreCheck(r) ~= 0)
-                wkscore(r,t,w) = str2double(rawData(t).franchise.player(r).score(w).week);
+                wkscore(r,w,t) = str2double(rawData(t).franchise.player(r).score(w).week);
+                weekScore(w).team(t).player(r).id=rawData(t).franchise.player(r).id;
+                weekScore(w).team(t).player(r).position=rawData(t).franchise.player(r).position;
+                weekScore(w).team(t).player(r).score=rawData(t).franchise.player(r).score(w).week;
+                weekScore(w).team(t).player(r).scoreInt=...
+                    str2double(rawData(t).franchise.player(r).score(w).week);
             end
         end
-        
+    end
+end
+for w=1:weekTot % Find highest scorers each week
+    for t=1:teams
+        scoreMat=[1:length(weekScore(w).team(t).player);weekScore(w).team(t).player.scoreInt];
+        [Y,I]=sort(scoreMat(2,:),'descend');
+        sortedScores=scoreMat(:,I);
+        for m=1:length(weekScore(w).team(t).player)
+            weekScore(w).team(t).player(sortedScores(1,m)).sorted=m;
+        end
     end
 end
