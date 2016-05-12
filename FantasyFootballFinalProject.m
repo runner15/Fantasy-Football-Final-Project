@@ -136,21 +136,34 @@ for w=1:regSeason % Calculate win totals
     for m=1:length(schedule.week(w).matchup)
         team1 = schedule.week(w).matchup(m,1);
         team2 = schedule.week(w).matchup(m,2);
-        winner = max(team1,team2);
-        rawData(winner).franchise.wins = rawData(winner).franchise.wins+1;
+        team1score = weekScore(w).team(team1).score;
+        team2score = weekScore(w).team(team2).score;
+        winner = max(team1score,team2score);
+        if (winner == team1score)
+            rawData(team1).franchise.wins = rawData(team1).franchise.wins+1;
+        else
+            rawData(team2).franchise.wins = rawData(team2).franchise.wins+1;
+        end
     end
 end
-for t=1:teams
+for t=1:teams % Create standings structure
     standings(t).id = rawData(t).franchise.id;
     standings(t).franchise = rawData(t).franchise.name;
     standings(t).wins = rawData(t).franchise.wins;
     standings(t).losses = 13-rawData(t).franchise.wins;
 end
 [winTot,teamWins] = sort([standings.wins],'Descend');
-for t=1:teams
+for t=1:teams % Create standings table
     Wins(t,1) = standings(teamWins(t)).wins;
     Losses(t,1) = standings(teamWins(t)).losses;
     Team{t,1} = char(standings(teamWins(t)).franchise);
 end
 Team = cell(Team);
 standingsTable = table(Wins,Losses,'RowNames',Team);
+playoffTeams = 6; playoffGames = playoffTeams-1; playoffRounds = 3;
+for t=1:playoffTeams % Create playoff team structure
+    playoffs(t).id = standings(teamWins(t)).id;
+end
+for t=1:playoffRounds
+    
+end
