@@ -25,7 +25,8 @@ for k=1:teams % Gets players and franchise name
     for l=1:length(roster.rosters.franchise(k).player)
         rawData(k).franchise = roster.rosters.franchise(k);
         rawData(k).franchise.name = franchise.league.franchises.franchise{k,1}.name;
-        rawData(k).franchise.idnum = str2double(roster.rosters.franchise(k).id);    
+        rawData(k).franchise.idnum = str2double(roster.rosters.franchise(k).id);  
+        rawData(k).franchise.wins = 0;
     end   
 end
 for k=1:teams % Adds player data to rawData
@@ -86,6 +87,7 @@ for w=1:weekTot % Create structure with weekly scores
         weekScore(w).team(t).score = 0;
     end
 end
+%% Calculate scores for each franchise each week
 for w=1:weekTot % Find highest scorers each week, sorted list in structure
     for t=1:teams
         scoreMat=[1:length(weekScore(w).team(t).player);weekScore(w).team(t).player.scoreInt];
@@ -127,5 +129,14 @@ for w=1:weekTot % Calculate weekly scores
                     weekScore(w).team(t).player(m).scoreInt;
             end
         end
+    end
+end
+%% Calculate win totals, standings, and playoff seeding
+for w=1:regSeason % Calculate win totals
+    for m=1:length(schedule.week(w).matchup)
+        team1 = schedule.week(w).matchup(m,1);
+        team2 = schedule.week(w).matchup(m,2);
+        winner = max(team1,team2);
+        rawData(winner).franchise.wins = rawData(winner).franchise.wins+1;
     end
 end
