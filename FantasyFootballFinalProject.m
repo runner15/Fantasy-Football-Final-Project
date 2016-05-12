@@ -210,6 +210,7 @@ if (game3winner == game3team1score)
 else
     schedule.week(17).matchup(1,1) = schedule.week(16).matchup(1,2);
 end
+%% Display standings and playoff matchups
 standingsTable
 fprintf('Game 1, Round 1: %s vs %s\n',rawData(schedule.week(14).matchup(1,1)).franchise.name,...
     rawData(schedule.week(14).matchup(1,2)).franchise.name);
