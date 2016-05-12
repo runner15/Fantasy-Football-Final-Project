@@ -97,10 +97,24 @@ for w=1:weekTot % Find highest scorers each week, sorted list in structure
 end
 for w=1:weekTot % Calculate weekly scores
     for t=1:teams
+        tempPos = positions;
         for m=1:length(weekScore(w).team(t).player)
             new(m) = find([weekScore(w).team(t).player.sorted] == m);
             scr = str2double(weekScore(w).team(t).player(new(m)).score);
             pos = char(weekScore(w).team(t).player(new(m)).position);
+            if (tempPos.(weekScore(w).team(t).player(new(m)).position) > 0)
+                tempPos.(weekScore(w).team(t).player(new(m)).position) =...
+                    tempPos.(weekScore(w).team(t).player(new(m)).position)-1;
+                weekScore(w).team(t).player(m).starter = 1;
+            elseif (tempPos.FLEX) > 0 & ...
+                    (weekScore(w).team(t).player(new(m)).position=='RB' |...
+                    weekScore(w).team(t).player(new(m)).position=='WR' |...
+                    weekScore(w).team(t).player(new(m)).position=='TE')
+                tempPos.FLEX=tempPos.FLEX-1;
+                weekScore(w).team(t).player(m).starter = 1;
+            else
+                weekScore(w).team(t).player(m).starter = 0;
+            end
         end
     end
 end
