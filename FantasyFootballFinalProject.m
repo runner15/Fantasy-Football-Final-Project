@@ -140,3 +140,17 @@ for w=1:regSeason % Calculate win totals
         rawData(winner).franchise.wins = rawData(winner).franchise.wins+1;
     end
 end
+for t=1:teams
+    standings(t).id = rawData(t).franchise.id;
+    standings(t).franchise = rawData(t).franchise.name;
+    standings(t).wins = rawData(t).franchise.wins;
+    standings(t).losses = 13-rawData(t).franchise.wins;
+end
+[winTot,teamWins] = sort([standings.wins],'Descend');
+for t=1:teams
+    Wins(t,1) = standings(teamWins(t)).wins;
+    Losses(t,1) = standings(teamWins(t)).losses;
+    Team{t,1} = char(standings(teamWins(t)).franchise);
+end
+Team = cell(Team);
+standingsTable = table(Wins,Losses,'RowNames',Team);
