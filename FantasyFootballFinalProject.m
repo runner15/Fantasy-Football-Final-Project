@@ -158,21 +158,23 @@ for t=1:teams % Create standings table
     Losses(t,1) = standings(teamWins(t)).losses;
     Team{t,1} = char(standings(teamWins(t)).franchise);
     standings(teamWins(t)).place = t;
+    Place(t,1) = t;
 end
 Team = cell(Team);
-standingsTable = table(Wins,Losses,'RowNames',Team);
+standingsTable = table(Wins,Losses,Place,'RowNames',Team);
 playoffTeams = 6; playoffGames = playoffTeams-1; playoffRounds = 3;
+%% Calculate playoff winners
 schedule.week(14).matchup(1,1) = find([standings.place] == 3);
 schedule.week(14).matchup(1,2) = find([standings.place] == 6);
 schedule.week(14).matchup(2,1) = find([standings.place] == 4);
 schedule.week(14).matchup(2,2) = find([standings.place] == 5);
 schedule.week(15).matchup(1,1) = find([standings.place] == 1);
 schedule.week(15).matchup(2,1) = find([standings.place] == 2);
-game1team1score = weekScore(w).team(schedule.week(14).matchup(1,1)).score;
-game1team2score = weekScore(w).team(schedule.week(14).matchup(1,2)).score;
+game1team1score = weekScore(14).team(schedule.week(14).matchup(1,1)).score;
+game1team2score = weekScore(14).team(schedule.week(14).matchup(1,2)).score;
 game1winner = max(game1team1score,game1team2score);
-game2team1score = weekScore(w).team(schedule.week(14).matchup(2,1)).score;
-game2team2score = weekScore(w).team(schedule.week(14).matchup(2,2)).score;
+game2team1score = weekScore(14).team(schedule.week(14).matchup(2,1)).score;
+game2team2score = weekScore(14).team(schedule.week(14).matchup(2,2)).score;
 game2winner = max(game2team1score,game2team2score);
 if (game1winner == game1team1score)
     schedule.week(15).matchup(1,2) = schedule.week(14).matchup(1,1);
@@ -184,11 +186,11 @@ if (game2winner == game2team1score)
 else
     schedule.week(15).matchup(2,2) = schedule.week(14).matchup(2,2);
 end
-game3team1score = weekScore(w).team(schedule.week(15).matchup(1,1)).score;
-game3team2score = weekScore(w).team(schedule.week(15).matchup(1,2)).score;
+game3team1score = weekScore(15).team(schedule.week(15).matchup(1,1)).score;
+game3team2score = weekScore(15).team(schedule.week(15).matchup(1,2)).score;
 game3winner = max(game3team1score,game3team2score);
-game4team1score = weekScore(w).team(schedule.week(15).matchup(2,1)).score;
-game4team2score = weekScore(w).team(schedule.week(15).matchup(2,2)).score;
+game4team1score = weekScore(15).team(schedule.week(15).matchup(2,1)).score;
+game4team2score = weekScore(15).team(schedule.week(15).matchup(2,2)).score;
 game4winner = max(game4team1score,game4team2score);
 if (game3winner == game3team1score)
     schedule.week(16).matchup(1,1) = schedule.week(15).matchup(1,1);
@@ -200,11 +202,23 @@ if (game4winner == game4team1score)
 else
     schedule.week(16).matchup(1,2) = schedule.week(15).matchup(2,2);
 end
-game5team1score = weekScore(w).team(schedule.week(16).matchup(1,1)).score;
-game5team2score = weekScore(w).team(schedule.week(16).matchup(1,2)).score;
+game5team1score = weekScore(16).team(schedule.week(16).matchup(1,1)).score;
+game5team2score = weekScore(16).team(schedule.week(16).matchup(1,2)).score;
 game5winner = max(game5team1score,game5team2score);
 if (game3winner == game3team1score)
     schedule.week(17).matchup(1,1) = schedule.week(16).matchup(1,1);
 else
     schedule.week(17).matchup(1,1) = schedule.week(16).matchup(1,2);
 end
+standingsTable
+fprintf('Game 1, Round 1: %s vs %s\n',rawData(schedule.week(14).matchup(1,1)).franchise.name,...
+    rawData(schedule.week(14).matchup(1,2)).franchise.name);
+fprintf('Game 2, Round 1: %s vs %s\n',rawData(schedule.week(14).matchup(2,1)).franchise.name,...
+    rawData(schedule.week(14).matchup(2,2)).franchise.name);
+fprintf('Game 3, Semifinal: %s vs %s\n',rawData(schedule.week(15).matchup(1,1)).franchise.name,...
+    rawData(schedule.week(15).matchup(1,2)).franchise.name);
+fprintf('Game 4, Semifinal: %s vs %s\n',rawData(schedule.week(15).matchup(2,1)).franchise.name,...
+    rawData(schedule.week(15).matchup(2,2)).franchise.name);
+fprintf('Game 5, Championship: %s vs %s\n',rawData(schedule.week(16).matchup(1,1)).franchise.name,...
+    rawData(schedule.week(16).matchup(1,2)).franchise.name);
+fprintf('Champion: %s\n',rawData(schedule.week(17).matchup(1,1)).franchise.name);
