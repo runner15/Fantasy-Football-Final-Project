@@ -83,6 +83,7 @@ for w=1:weekTot % Create structure with weekly scores
                     str2double(rawData(t).franchise.player(r).score(w).week);
             end
         end
+        weekScore(w).team(t).score = 0;
     end
 end
 for w=1:weekTot % Find highest scorers each week, sorted list in structure
@@ -114,6 +115,16 @@ for w=1:weekTot % Calculate weekly starters
                 weekScore(w).team(t).player(new(m)).starter = 1;
             else
                 weekScore(w).team(t).player(new(m)).starter = 0;
+            end
+        end
+    end
+end
+for w=1:weekTot % Calculate weekly scores
+    for t=1:teams
+        for m=1:length(weekScore(w).team(t).player)
+            if (weekScore(w).team(t).player(m).starter == 1)
+                weekScore(w).team(t).score = weekScore(w).team(t).score+...
+                    weekScore(w).team(t).player(m).scoreInt;
             end
         end
     end
