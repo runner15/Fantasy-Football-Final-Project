@@ -4,7 +4,7 @@ winners.  the schedule is random.
 To use, just copy past the code into your MATLAB, and it will run.  
 Below is an example of the output and what the program calculates:
 
-				         Wins    Losses    Place
+				                         Wins    Losses    Place
                                          ____    ______    _____
 
     Gronk Wears Short Shorts             11       2         1   
@@ -20,9 +20,9 @@ Below is an example of the output and what the program calculates:
     The Revolution                        2      11        11   
     Caught Red Hernandez                  1      12        12   
 
-Game 1, Round 1: Boston Colts vs Coinstar Express
-Game 2, Round 1: Demonic Dynasty vs Plum Mustangs
-Game 3, Semifinal: Gronk Wears Short Shorts vs Coinstar Express
-Game 4, Semifinal: Beats By Ray vs Demonic Dynasty
-Game 5, Championship: Gronk Wears Short Shorts vs Demonic Dynasty
-Champion: Gronk Wears Short Shorts
+Game 1, Round 1: Boston Colts vs Coinstar Express  
+Game 2, Round 1: Demonic Dynasty vs Plum Mustangs  
+Game 3, Semifinal: Gronk Wears Short Shorts vs Coinstar Express  
+Game 4, Semifinal: Beats By Ray vs Demonic Dynasty  
+Game 5, Championship: Gronk Wears Short Shorts vs Demonic Dynasty  
+Champion: Gronk Wears Short Shorts  
