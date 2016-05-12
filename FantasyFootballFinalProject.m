@@ -10,7 +10,7 @@ for n=1:weekTot % Get scoring data for every week
     url=strcat(url,num2str(n));
     week(n,:)=webread(url);
 end
-QB=1; RB=2; WR=3; TE=1; K=1; Def=1; FLEX=1;
+positions = struct('QB',1,'RB',2,'WR',3,'TE',1,'PK',1,'Def',1,'FLEX',1);
 regSeason=13;
 %% Create better players array
 for g=1:length(allPlayers.players.player)
@@ -85,13 +85,22 @@ for w=1:weekTot % Create structure with weekly scores
         end
     end
 end
-for w=1:weekTot % Find highest scorers each week
+for w=1:weekTot % Find highest scorers each week, sorted list in structure
     for t=1:teams
         scoreMat=[1:length(weekScore(w).team(t).player);weekScore(w).team(t).player.scoreInt];
         [Y,I]=sort(scoreMat(2,:),'descend');
         sortedScores=scoreMat(:,I);
         for m=1:length(weekScore(w).team(t).player)
             weekScore(w).team(t).player(sortedScores(1,m)).sorted=m;
+        end
+    end
+end
+for w=1:weekTot % Calculate weekly scores
+    for t=1:teams
+        for m=1:length(weekScore(w).team(t).player)
+            new(m) = find([weekScore(w).team(t).player.sorted] == m);
+            scr = str2double(weekScore(w).team(t).player(new(m)).score);
+            pos = char(weekScore(w).team(t).player(new(m)).position);
         end
     end
 end
